@@ -1,0 +1,31 @@
+table MonthlyRevenue
+
+    column Month
+        dataType: string
+        sourceColumn: Month
+
+    column USD_Revenue
+        dataType: double
+        sourceColumn: USD_Revenue
+
+    partition MonthlyRevenue = m
+        mode: import
+        source =
+            let
+                Source = Csv.Document(
+                    File.Contents("C:\Enterprise_Data_Reconciliation\data\monthly_revenue.csv"),
+                    [Delimiter=",", Columns=2, Encoding=65001, QuoteStyle=QuoteStyle.Csv]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(
+                    Source,
+                    [PromoteAllScalars=true]
+                ),
+                ChangedType = Table.TransformColumnTypes(
+                    PromotedHeaders,
+                    {
+                        {"Month", type text},
+                        {"USD_Revenue", type number}
+                    }
+                )
+            in
+                ChangedType

@@ -1,0 +1,144 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "v17_tableEx",
+  "position": {
+    "x": 24,
+    "y": 426,
+    "z": 1700,
+    "height": 278,
+    "width": 1240,
+    "tabOrder": 1700
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "Date"
+                }
+              },
+              "queryRef": "ReconciledTransactions.Date",
+              "nativeQueryRef": "Date"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "User_ID"
+                }
+              },
+              "queryRef": "ReconciledTransactions.User_ID",
+              "nativeQueryRef": "User_ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "name"
+                }
+              },
+              "queryRef": "ReconciledTransactions.name",
+              "nativeQueryRef": "name"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "Product_ID"
+                }
+              },
+              "queryRef": "ReconciledTransactions.Product_ID",
+              "nativeQueryRef": "Product_ID"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "Euro_Value"
+                }
+              },
+              "queryRef": "ReconciledTransactions.Euro_Value",
+              "nativeQueryRef": "Euro_Value"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "EUR_to_USD_Filled"
+                }
+              },
+              "queryRef": "ReconciledTransactions.EUR_to_USD_Filled",
+              "nativeQueryRef": "EUR_to_USD_Filled"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ReconciledTransactions"
+                    }
+                  },
+                  "Property": "USD_Revenue"
+                }
+              },
+              "queryRef": "ReconciledTransactions.USD_Revenue",
+              "nativeQueryRef": "USD_Revenue"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Transaction Detail (reconciled)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

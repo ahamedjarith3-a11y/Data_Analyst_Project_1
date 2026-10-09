@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "Enterprise_Reconciliation"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "21c57e90-f5ec-4564-99d4-b77331d7bdf5"
+  }
+}

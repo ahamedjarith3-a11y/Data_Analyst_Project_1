@@ -1,0 +1,135 @@
+table ReconciledTransactions
+	lineageTag: cc7400e6-cd92-4ee4-b135-8ac4fc397a7e
+
+	measure 'Total USD Revenue' = SUM(ReconciledTransactions[USD_Revenue])
+		formatString: \$#,##0.0,,"M"
+		lineageTag: d733201c-f8ae-4347-936d-ffafd07f9901
+
+	measure 'Transaction Count' = COUNTROWS(ReconciledTransactions)
+		formatString: #,##0
+		lineageTag: a61ca9b1-d0ce-4bc4-a43a-aabe3a5f2ef5
+
+	measure 'Average Transaction USD' = DIVIDE([Total USD Revenue], [Transaction Count])
+		formatString: \$#,##0
+		lineageTag: 00196dda-f867-47e7-9fc0-e186e0c4faeb
+
+	measure 'Active Customers' = DISTINCTCOUNT(ReconciledTransactions[User_ID])
+		formatString: #,##0
+		lineageTag: d304b26e-1781-444d-83af-8c8df95a4c21
+
+	measure 'Latest Active Users' = CALCULATE(MAX(PipelineStages[Records]), PipelineStages[Stage_Order] = 3)
+		formatString: #,##0
+		lineageTag: 3c9f717b-2041-43f2-a525-e630da4dbdf3
+
+	measure 'ERROR Logs' = SUM(ErrorsByMonth[ERROR_Logs])
+		formatString: #,##0
+		lineageTag: ecd65100-dd5a-490f-869d-6ec93fc7aee9
+
+	measure 'Error Rate' = DIVIDE(SUM(ErrorsByMonth[ERROR_Logs]), SUM(ErrorsByMonth[Total_Logs]))
+		formatString: 0.0%
+		lineageTag: 1195f17a-a1b9-43a6-b3b4-3f56265b5584
+
+	measure 'Revenue per Customer' = DIVIDE([Total USD Revenue], [Active Customers])
+		formatString: \$#,##0
+		lineageTag: f7b9f13d-0f2a-4d0d-a898-070db651ee3d
+
+	measure 'Top 5 Revenue' = CALCULATE([Total USD Revenue], TOPN(5, VALUES(ReconciledTransactions[User_ID]), [Total USD Revenue], DESC))
+		formatString: \$#,##0
+		lineageTag: e9280116-dba7-4b19-a87f-440c563c872f
+
+	measure 'Revenue MoM %' =
+			VAR m = SELECTEDVALUE(ReconciledTransactions[Month])
+			VAR prev = CALCULATE([Total USD Revenue], FILTER(ALL(ReconciledTransactions[Month]), ReconciledTransactions[Month] = FORMAT(EDATE(DATEVALUE(m & "-01"), -1), "yyyy-MM")))
+			RETURN IF(ISBLANK(prev), BLANK(), DIVIDE([Total USD Revenue] - prev, prev))
+		formatString: +0.0%;-0.0%
+		lineageTag: 053e1ce1-82e8-4ff5-b292-47bdbcc180b2
+
+	measure 'Reconciliation Rate' = DIVIDE(CALCULATE(MAX(PipelineStages[Records]), PipelineStages[Stage_Order] = 4), CALCULATE(MAX(PipelineStages[Records]), PipelineStages[Stage_Order] = 2))
+		formatString: 0.0%
+		lineageTag: 46d6305e-90af-4897-b291-9f3f9281c5c2
+
+	column Date
+		dataType: dateTime
+		formatString: dd mmm yyyy
+		lineageTag: 6e962f33-42ea-4192-8ae5-94d63151bd82
+		summarizeBy: none
+		sourceColumn: Date
+
+		variation Variation
+			isDefault
+			relationship: 96cf57ca-6e0c-4578-a195-738328579715
+			defaultHierarchy: LocalDateTable_e7bb935d-4fc0-4ce2-80b2-32847259eae0.'Date Hierarchy'
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column User_ID
+		dataType: string
+		lineageTag: cd6a17d4-3ae5-4e78-85ae-6bc8ac84f1be
+		summarizeBy: none
+		sourceColumn: User_ID
+
+	column Product_ID
+		dataType: string
+		lineageTag: 5a93c046-9713-4b5f-afc8-63c443deae7d
+		summarizeBy: none
+		sourceColumn: Product_ID
+
+	column Euro_Value
+		dataType: double
+		formatString: \€#,##0.00
+		lineageTag: 47f77f51-2adb-4e90-8490-9d7972f5b701
+		summarizeBy: sum
+		sourceColumn: Euro_Value
+
+		annotation SummarizationSetBy = Automatic
+
+	column EUR_to_USD_Filled
+		dataType: double
+		formatString: 0.0000
+		lineageTag: 55369c54-7d43-4dd9-b3a7-444c2f36bbdf
+		summarizeBy: sum
+		sourceColumn: EUR_to_USD_Filled
+
+		annotation SummarizationSetBy = Automatic
+
+	column USD_Revenue
+		dataType: double
+		formatString: \$#,##0.00
+		lineageTag: e80d90b1-7272-4334-8183-597f97e1d6c7
+		summarizeBy: sum
+		sourceColumn: USD_Revenue
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: c9607d82-3234-4826-b959-8fc650362c5d
+		summarizeBy: none
+		sourceColumn: Month
+
+	column name
+		dataType: string
+		lineageTag: aaff1e06-15f5-48d6-ad20-fba38d464f69
+		summarizeBy: none
+		sourceColumn: name
+
+	partition ReconciledTransactions = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\reconciled_transactions.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    Selected = Table.SelectColumns(PromotedHeaders, {"Date", "User_ID", "Product_ID", "Euro_Value", "EUR_to_USD_Filled", "USD_Revenue", "Month", "name"}),
+				    ChangedType = Table.TransformColumnTypes(Selected, {
+				            {"Date", type date},
+				            {"User_ID", type text},
+				            {"Product_ID", type text},
+				            {"Euro_Value", type number},
+				            {"EUR_to_USD_Filled", type number},
+				            {"USD_Revenue", type number},
+				            {"Month", type text},
+				            {"name", type text}
+				    }, "en-US")
+				in
+				    ChangedType
+

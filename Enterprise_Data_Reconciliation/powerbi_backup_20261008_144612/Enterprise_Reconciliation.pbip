@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0",
+  "artifacts": [
+    {
+      "report": {
+        "path": "Enterprise_Reconciliation.Report"
+      }
+    },
+    {
+      "semanticModel": {
+        "path": "Enterprise_Reconciliation.SemanticModel"
+      }
+    }
+  ]
+}

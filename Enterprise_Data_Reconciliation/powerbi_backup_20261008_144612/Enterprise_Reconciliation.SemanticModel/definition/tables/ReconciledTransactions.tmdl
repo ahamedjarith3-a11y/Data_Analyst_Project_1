@@ -1,0 +1,20 @@
+table ReconciledTransactions
+    column Date
+        dataType: dateTime
+    column User_ID
+        dataType: string
+    column Product_ID
+        dataType: string
+    column Euro_Value
+        dataType: double
+    column EUR_to_USD_Filled
+        dataType: double
+    column USD_Revenue
+        dataType: double
+    column Month
+        dataType: string
+    column name
+        dataType: string
+    measure Total USD Revenue = SUM(ReconciledTransactions[USD_Revenue])
+    measure Transaction Count = COUNTROWS(ReconciledTransactions)
+    measure Average Transaction USD = DIVIDE([Total USD Revenue], [Transaction Count])

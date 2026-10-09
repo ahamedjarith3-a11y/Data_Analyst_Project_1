@@ -1,0 +1,22 @@
+model Model
+	culture: en-US
+	defaultPowerBIDataSourceVersion: powerBI_V3
+	sourceQueryCulture: en-US
+	dataAccessOptions
+		legacyRedirects
+		returnErrorValuesAsNull
+
+annotation PBI_QueryOrder = ["ReconciledTransactions","MonthlyRevenue","Top5Customers","PipelineStages","ErrorsByMonth","DataFolder"]
+
+annotation __PBI_TimeIntelligenceEnabled = 1
+
+annotation PBI_ProTooling = ["DevMode"]
+
+ref table ReconciledTransactions
+ref table MonthlyRevenue
+ref table Top5Customers
+ref table PipelineStages
+ref table ErrorsByMonth
+ref table DateTableTemplate_e5bfb257-4d8d-4a03-a198-d73aaf749c36
+ref table LocalDateTable_e7bb935d-4fc0-4ce2-80b2-32847259eae0
+

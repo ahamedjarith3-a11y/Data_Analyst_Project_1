@@ -1,0 +1,7 @@
+model
+    culture: en-US
+    defaultPowerBIDataSourceVersion: powerBI_V3
+
+ref table ReconciledTransactions
+ref table MonthlyRevenue
+ref table Top5Customers

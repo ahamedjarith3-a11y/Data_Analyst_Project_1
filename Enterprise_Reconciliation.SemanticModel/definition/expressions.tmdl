@@ -1,0 +1,5 @@
+expression DataFolder = "C:\Users\acer\Downloads\Enterprise_PowerBI_Dashboard\Enterprise_Data_Reconciliation\data" meta [IsParameterQuery=true, Type="Text", IsParameterQueryRequired=true]
+	lineageTag: 315db277-3d44-4ad6-9eb9-3620745c0ae9
+
+	annotation PBI_ResultType = Text
+

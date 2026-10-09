@@ -1,0 +1,15 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/report/3.2.0/schema.json",
+  "layoutOptimization": "None",
+  "themeCollection": {
+    "baseTheme": {
+      "name": "CY26SU02",
+      "reportVersionAtImport": "2026.06.0",
+      "type": "SharedResources"
+    }
+  },
+  "settings": {
+    "hideVisualContainerHeader": true,
+    "pagesPosition": "Bottom"
+  }
+}

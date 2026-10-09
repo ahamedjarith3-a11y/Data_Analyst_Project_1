@@ -1,0 +1,7 @@
+table Top5Customers
+    column User_ID
+        dataType: string
+    column name
+        dataType: string
+    column USD_Revenue
+        dataType: double

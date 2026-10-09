@@ -1,0 +1,45 @@
+table ErrorsByMonth
+	lineageTag: 65357343-204a-46ae-a100-0598c74fc63e
+
+	column Month
+		dataType: string
+		lineageTag: 20a98316-c80f-47aa-89f3-97ceea890b18
+		summarizeBy: none
+		sourceColumn: Month
+
+	column Total_Logs
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 9b561bee-e1e8-47cd-9f30-2e98a7c0d092
+		summarizeBy: sum
+		sourceColumn: Total_Logs
+
+	column ERROR_Logs
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 09a3b251-bd7e-45f9-b6f3-8564cd1d1e82
+		summarizeBy: sum
+		sourceColumn: ERROR_Logs
+
+	column Valid_Logs
+		dataType: int64
+		formatString: #,##0
+		lineageTag: 5055ff32-29ca-4b2c-ab3e-046b79166a4a
+		summarizeBy: sum
+		sourceColumn: Valid_Logs
+
+	partition ErrorsByMonth = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents(DataFolder & "\errors_by_month.csv"), [Delimiter=",", Encoding=65001, QuoteStyle=QuoteStyle.Csv]),
+				    PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    ChangedType = Table.TransformColumnTypes(PromotedHeaders, {
+				            {"Month", type text},
+				            {"Total_Logs", Int64.Type},
+				            {"ERROR_Logs", Int64.Type},
+				            {"Valid_Logs", Int64.Type}
+				    }, "en-US")
+				in
+				    ChangedType
+

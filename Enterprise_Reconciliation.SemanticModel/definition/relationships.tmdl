@@ -1,0 +1,10 @@
+relationship rel_month_errors
+	crossFilteringBehavior: bothDirections
+	fromColumn: ReconciledTransactions.Month
+	toColumn: ErrorsByMonth.Month
+
+relationship 96cf57ca-6e0c-4578-a195-738328579715
+	joinOnDateBehavior: datePartOnly
+	fromColumn: ReconciledTransactions.Date
+	toColumn: LocalDateTable_e7bb935d-4fc0-4ce2-80b2-32847259eae0.Date
+

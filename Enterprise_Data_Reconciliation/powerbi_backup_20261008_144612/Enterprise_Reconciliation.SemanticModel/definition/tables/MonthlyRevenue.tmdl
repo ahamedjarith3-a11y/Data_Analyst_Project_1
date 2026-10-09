@@ -1,0 +1,5 @@
+table MonthlyRevenue
+    column Month
+        dataType: string
+    column USD_Revenue
+        dataType: double
